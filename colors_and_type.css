@@ -1,0 +1,299 @@
+/* =========================================================================
+   Lumen Design System — colors_and_type.css
+   Warm, soft, ethereal. Creative tool aesthetic.
+   ========================================================================= */
+
+/* ---------- Webfonts -----------------------------------------------------
+   Body/UI:    Noto Sans       (uploaded brand variable font, wdth + wght axes)
+   Display:    Instrument Serif (soft serif, for editorial accents — Google Fonts)
+   Mono:       JetBrains Mono   (Google Fonts)
+------------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@font-face {
+  font-family: "Noto Sans";
+  src: url("fonts/NotoSans-VariableFont_wdth_wght.ttf") format("truetype-variations"),
+       url("fonts/NotoSans-VariableFont_wdth_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 62.5% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans";
+  src: url("fonts/NotoSans-Italic-VariableFont_wdth_wght.ttf") format("truetype-variations"),
+       url("fonts/NotoSans-Italic-VariableFont_wdth_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 62.5% 100%;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* ============================ COLOR ================================= */
+
+  /* --- Brand: warm amber/honey (soft golden, ethereal) --- */
+  --brand-50:  #FDF9F1;
+  --brand-100: #FAF0DC;
+  --brand-200: #F4DFB3;
+  --brand-300: #EDC985;
+  --brand-400: #E5B058;
+  --brand-500: #D89535;   /* primary */
+  --brand-600: #B87822;
+  --brand-700: #905B18;
+  --brand-800: #6A4313;
+  --brand-900: #4A2F0F;
+
+  /* --- Secondary: sage green (calm, organic counterpoint) --- */
+  --accent-50:  #F3F6F2;
+  --accent-100: #E3EADD;
+  --accent-200: #C7D5BC;
+  --accent-300: #A6BC97;
+  --accent-400: #83A074;
+  --accent-500: #638356;   /* secondary */
+  --accent-600: #4D6843;
+  --accent-700: #3B5134;
+  --accent-800: #2B3B26;
+  --accent-900: #1D281A;
+
+  /* --- Neutrals: warm cream → deep warm charcoal (slight yellow/red cast) --- */
+  --neutral-0:    #FFFFFF;
+  --neutral-50:   #FBF8F3;   /* page background */
+  --neutral-100:  #F5F0E7;
+  --neutral-200:  #EBE4D6;
+  --neutral-300:  #D9D0BE;
+  --neutral-400:  #B8AD97;
+  --neutral-500:  #8E846F;
+  --neutral-600:  #665E4F;
+  --neutral-700:  #4A4338;
+  --neutral-800:  #2F2A23;
+  --neutral-900:  #1B1814;
+  --neutral-1000: #000000;
+
+  /* --- Semantic --- */
+  --success-bg:    #EAF1E3;
+  --success-fg:    #3B5134;
+  --success-border:#A6BC97;
+
+  --warning-bg:    #FBEECB;
+  --warning-fg:    #7A5410;
+  --warning-border:#E5B058;
+
+  --danger-bg:     #F7E3DA;
+  --danger-fg:     #8A3A1E;
+  --danger-border: #D99375;
+
+  --info-bg:       #E3EDF3;
+  --info-fg:       #2F5668;
+  --info-border:   #8FB2C2;
+
+  /* --- Surfaces --- */
+  --surface-bg:       var(--neutral-50);
+  --surface-card:     var(--neutral-0);
+  --surface-elevated: #FFFFFF;
+  --surface-sunken:   var(--neutral-100);
+  --surface-overlay:  rgba(27, 24, 20, 0.45);     /* warm black tint */
+
+  /* --- Text --- */
+  --fg-1:        var(--neutral-900);   /* primary text */
+  --fg-2:        var(--neutral-700);   /* secondary */
+  --fg-3:        var(--neutral-500);   /* muted */
+  --fg-inverse:  var(--neutral-50);
+  --fg-link:     var(--brand-700);
+  --fg-link-hover: var(--brand-800);
+  --fg-on-brand: #1B1814;              /* text on brand fills */
+
+  /* --- Borders --- */
+  --border-subtle:   var(--neutral-200);
+  --border-default:  var(--neutral-300);
+  --border-strong:   var(--neutral-400);
+  --border-focus:    var(--brand-500);
+
+  /* ============================ TYPE ================================== */
+  --font-sans:  "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  --fs-xs:   0.75rem;    /* 12 */
+  --fs-sm:   0.875rem;   /* 14 */
+  --fs-base: 1rem;       /* 16 */
+  --fs-lg:   1.125rem;   /* 18 */
+  --fs-xl:   1.25rem;    /* 20 */
+  --fs-2xl:  1.5rem;     /* 24 */
+  --fs-3xl:  1.875rem;   /* 30 */
+  --fs-4xl:  2.5rem;     /* 40 */
+  --fs-5xl:  3.5rem;     /* 56 */
+  --fs-6xl:  5rem;       /* 80 */
+
+  --lh-tight:   1.1;
+  --lh-snug:    1.25;
+  --lh-normal:  1.5;
+  --lh-relaxed: 1.65;
+
+  --ls-tight:  -0.02em;
+  --ls-snug:   -0.01em;
+  --ls-normal: 0;
+  --ls-wide:   0.04em;
+
+  /* ============================ SPACING =============================== */
+  --space-0:  0;
+  --space-1:  0.25rem;  /* 4  */
+  --space-2:  0.5rem;   /* 8  */
+  --space-3:  0.75rem;  /* 12 */
+  --space-4:  1rem;     /* 16 */
+  --space-5:  1.25rem;  /* 20 */
+  --space-6:  1.5rem;   /* 24 */
+  --space-8:  2rem;     /* 32 */
+  --space-10: 2.5rem;   /* 40 */
+  --space-12: 3rem;     /* 48 */
+  --space-16: 4rem;     /* 64 */
+  --space-20: 5rem;     /* 80 */
+  --space-24: 6rem;     /* 96 */
+
+  /* ============================ RADIUS ================================ */
+  /* Lumen leans generously rounded — "smooth corners" is core to the brand. */
+  --radius-none: 0;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-2xl:  32px;
+  --radius-pill: 9999px;
+
+  /* ============================ SHADOW ================================
+     Warm-tinted shadows (brown-black, not pure black) for soft elevation.
+     Also includes inner-highlight shadow for card "lift" look.            */
+  --shadow-xs: 0 1px 2px rgba(74, 47, 15, 0.05);
+  --shadow-sm: 0 1px 3px rgba(74, 47, 15, 0.06), 0 1px 2px rgba(74, 47, 15, 0.04);
+  --shadow-md: 0 4px 10px -2px rgba(74, 47, 15, 0.08), 0 2px 4px -2px rgba(74, 47, 15, 0.04);
+  --shadow-lg: 0 12px 24px -6px rgba(74, 47, 15, 0.10), 0 4px 8px -4px rgba(74, 47, 15, 0.05);
+  --shadow-xl: 0 24px 48px -12px rgba(74, 47, 15, 0.14), 0 8px 16px -8px rgba(74, 47, 15, 0.06);
+  --shadow-glow: 0 0 0 4px rgba(216, 149, 53, 0.18);   /* focus ring / halo */
+  --shadow-inner: inset 0 1px 2px rgba(74, 47, 15, 0.06);
+
+  /* ============================ MOTION ================================ */
+  --duration-fast:   140ms;
+  --duration-normal: 240ms;
+  --duration-slow:   420ms;
+
+  --ease-standard:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasize: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit:      cubic-bezier(0.4, 0, 1, 1);
+  --ease-soft:      cubic-bezier(0.32, 0.72, 0.2, 1);   /* Lumen signature */
+
+  /* ============================ Z-INDEX =============================== */
+  --z-base:     0;
+  --z-dropdown: 1000;
+  --z-sticky:   1100;
+  --z-overlay:  1200;
+  --z-modal:    1300;
+  --z-toast:    1400;
+}
+
+/* ========================================================================
+   Semantic type presets — use these class-based styles directly in markup.
+   ======================================================================== */
+
+.type-display {
+  font-family: var(--font-serif);
+  font-size: var(--fs-6xl);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  font-style: italic;
+}
+
+.type-h1 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-5xl);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+}
+
+.type-h2 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-snug);
+}
+
+.type-h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-snug);
+}
+
+.type-h4 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+}
+
+.type-lead {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-2);
+}
+
+.type-body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+}
+
+.type-body-sm {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+}
+
+.type-caption {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+.type-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+}
+
+.type-editorial {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: var(--fw-regular);
+}
+
+/* Body defaults */
+html, body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--fg-1);
+  background: var(--surface-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
