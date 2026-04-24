@@ -371,3 +371,5 @@
     margin-top: 4px; line-height: 1.55;
   }
   .foot-legal a { color: var(--fg-2); text-decoration: underline; text-underline-offset: 2px; }
+
+.success, .success-ring, @keyframes settle, .stepper, .step-pip .stepper-label {color:blue;}
