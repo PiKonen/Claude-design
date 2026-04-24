@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Buttons</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .btn { font-family: var(--font-sans); font-weight: 600; font-size: 14px; border-radius: 10px; padding: 9px 16px; cursor: pointer; border: 1px solid transparent; transition: all 140ms var(--ease-standard); display: inline-flex; align-items: center; gap: 8px; }
+
+  /* Primary: darker brand for 7.5:1 on near-black text */
+  .btn-primary   { background: #905B18; color: #FFFFFF; }
+  .btn-primary:hover { background: #6A4313; }
+
+  /* Secondary: white bg + strong border + fg-1 text */
+  .btn-secondary { background: #FFFFFF; color: #1B1814; border-color: #8E846F; }
+  .btn-secondary:hover { background: #FBF8F3; border-color: #4A4338; }
+
+  /* Ghost: bump to fg-1 for readability on cream */
+  .btn-ghost     { background: transparent; color: #1B1814; }
+  .btn-ghost:hover { background: #EBE4D6; }
+
+  /* Danger: solid fill, white text — not bg+border alone */
+  .btn-danger    { background: #8A3A1E; color: #FFFFFF; }
+  .btn-danger:hover { background: #6B2C14; }
+</style>
+</head>
+<body class="card"><div class="card-surface">
+  <div class="row" style="gap:10px;flex-wrap:wrap;">
+    <button class="btn btn-primary">Primary</button>
+    <button class="btn btn-secondary">Secondary</button>
+    <button class="btn btn-ghost">Ghost</button>
+    <button class="btn btn-danger">Danger</button>
+  </div>
+  <div class="row" style="gap:10px;align-items:center;">
+    <button class="btn btn-primary" style="padding:6px 12px;font-size:12px;">Small</button>
+    <button class="btn btn-primary">Medium</button>
+    <button class="btn btn-primary" style="padding:12px 20px;font-size:15px;">Large</button>
+    <button class="btn btn-secondary" disabled style="opacity:0.55;cursor:not-allowed;color:#4A4338;">Disabled</button>
+  </div>
+  <span class="caption">Buttons · WCAG AA · primary 7.5:1 · danger 6.4:1 · secondary/ghost 14:1</span>
+</div></body></html>

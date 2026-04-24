@@ -1,0 +1,47 @@
+/* Shared base for all preview cards.
+   Each card is a ~700×auto tile rendered on its own HTML file. */
+
+@import url("../colors_and_type.css");
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+body.card {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 24px;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+}
+
+.card-surface {
+  width: 100%;
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-xs);
+}
+
+.row { display: flex; align-items: center; gap: 12px; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.grid { display: grid; gap: 12px; }
+
+.caption {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+.mono { font-family: var(--font-mono); }

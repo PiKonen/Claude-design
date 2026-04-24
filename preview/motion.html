@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Motion</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+@keyframes softpulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.12);} }
+@keyframes drift    { 0%,100%{transform:translateX(0);} 50%{transform:translateX(12px);} }
+@keyframes lift     { 0%,100%{transform:translateY(0);box-shadow:0 1px 3px rgba(74,47,15,0.06);} 50%{transform:translateY(-6px);box-shadow:0 12px 24px -6px rgba(74,47,15,0.14);} }
+</style>
+</head>
+<body class="card"><div class="card-surface">
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px;">
+    <div style="background:#FBF8F3;border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <div style="width:40px;height:40px;border-radius:50%;background:#D89535;animation:softpulse 2s var(--ease-soft) infinite;"></div>
+      <span class="caption" style="color:#2F2A23;">Soft pulse</span>
+    </div>
+    <div style="background:#FBF8F3;border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <div style="width:40px;height:40px;border-radius:10px;background:#638356;animation:drift 2.4s var(--ease-soft) infinite;"></div>
+      <span class="caption" style="color:#2F2A23;">Drift</span>
+    </div>
+    <div style="background:#FBF8F3;border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <div style="width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid #EBE4D6;animation:lift 2.6s var(--ease-soft) infinite;"></div>
+      <span class="caption" style="color:#2F2A23;">Lift</span>
+    </div>
+  </div>
+  <div class="row" style="justify-content:space-between;">
+    <span class="caption">Motion · ease-soft cubic-bezier(.32,.72,.2,1)</span>
+    <span class="mono" style="font-size:11px;color:var(--fg-3);">fast 140 · normal 240 · slow 420</span>
+  </div>
+</div></body></html>
