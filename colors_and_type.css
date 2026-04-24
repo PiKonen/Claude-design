@@ -372,4 +372,4 @@
   }
   .foot-legal a { color: var(--fg-2); text-decoration: underline; text-underline-offset: 2px; }
 
-.success, .success-ring, @keyframes settle, .stepper, .step-pip .stepper-label {color:blue;}
+.success, .success-ring, @keyframes settle, .stepper, .step-pip .stepper-label {color:blue; border:1px solid blue; background-color:blue;}
