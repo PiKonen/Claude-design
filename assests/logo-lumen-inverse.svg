@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" fill="none">
+  <g>
+    <circle cx="20" cy="20" r="14" fill="rgba(255,255,255,0.12)"></circle>
+    <circle cx="20" cy="20" r="9" fill="#F4DFB3"></circle>
+    <circle cx="20" cy="20" r="4.5" fill="#E5B058"></circle>
+    <circle cx="20" cy="20" r="1.8" fill="#FBF8F3"></circle>
+  </g>
+  <text x="44" y="27" font-family="Inter Tight, system-ui, -apple-system, sans-serif" font-size="22" font-weight="600" letter-spacing="-0.02em" fill="#FBF8F3">Lumen</text>
+</svg>
