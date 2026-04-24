@@ -3,12 +3,19 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="../colors_and_type.css">
 <title>Lumen — Create your account</title>
+
+<!-- Fonts (the GitHub colors_and_type.css declares the families but does not import them) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<!-- Single source of truth for all visual styling -->
+<link rel="stylesheet" href="https://raw.githubusercontent.com/PiKonen/Claude-design/main/colors_and_type.css">
+
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
-
 </head>
 <body>
 <div id="root"></div>
@@ -112,10 +119,10 @@ const IconApple = ({ size = 16 }) => (
 );
 
 /* ======================================================================
-   LOGOS (inlined SVG — no external assets)
+   LOGOS
    ====================================================================== */
 const LogoLumen = ({ inverse = false }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" fill="none" style={{ height: 32 }}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" fill="none">
     <g>
       <circle cx="20" cy="20" r="14" fill={inverse ? "rgba(255,255,255,0.12)" : "#FAF0DC"} />
       <circle cx="20" cy="20" r="9"  fill={inverse ? "#F4DFB3" : "#EDC985"} />
@@ -127,7 +134,7 @@ const LogoLumen = ({ inverse = false }) => (
 );
 
 /* ======================================================================
-   DETECTION HELPERS
+   HELPERS
    ====================================================================== */
 const detectMode = (raw) => {
   const v = raw.trim();
@@ -152,7 +159,7 @@ const formatPhone = (v) => {
 };
 
 /* ======================================================================
-   HERO (with stepper)
+   HERO
    ====================================================================== */
 const Hero = ({ stepIndex }) => (
   <section className="hero" aria-hidden="true">
@@ -225,7 +232,7 @@ const CountryPopover = ({ selected, onSelect, onClose }) => {
         />
       </div>
       <div className="cc-list">
-        {filtered.length === 0 && <div style={{ padding: 16, color: "var(--fg-3)", fontSize: 13 }}>No matches.</div>}
+        {filtered.length === 0 && <div className="hint">No matches.</div>}
         {filtered.map((c, i) => (
           <div
             key={c.code}
@@ -269,7 +276,7 @@ const DetailsStep = ({ name, setName, value, setValue, country, setCountry, agre
   const placeholder = isPhone ? "40 123 4567" : "you@studio.com or +358…";
 
   return (
-    <div className="step" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+    <div className="step">
       <div>
         <h1 className="step-title">Create your account</h1>
         <p className="step-sub">
@@ -277,8 +284,7 @@ const DetailsStep = ({ name, setName, value, setValue, country, setCountry, agre
         </p>
       </div>
 
-      <form onSubmit={(e) => { e.preventDefault(); if (valid) onSubmit({ name: name.trim(), mode: isEmail ? "email" : "phone", value: value.trim(), country }); }}
-            style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <form onSubmit={(e) => { e.preventDefault(); if (valid) onSubmit({ name: name.trim(), mode: isEmail ? "email" : "phone", value: value.trim(), country }); }}>
 
         <div className="field">
           <label className="label" htmlFor="name">Your name</label>
@@ -416,7 +422,7 @@ const VerifyStep = ({ identity, onBack, onVerify }) => {
   };
 
   return (
-    <div className="step" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+    <div className="step">
       <button className="back" onClick={onBack} type="button">
         <IconArrow dir="left" /> Edit {isPhone ? "number" : "email"}
       </button>
@@ -433,7 +439,7 @@ const VerifyStep = ({ identity, onBack, onVerify }) => {
         <div className="otp-row" onClick={() => refs.current[active] && refs.current[active].focus()} role="group" aria-label="One-time PIN">
           {digits.map((d, i) => (
             <div key={i} className={`otp-cell ${d ? "filled" : ""} ${active === i && !error ? "active" : ""} ${error ? "error" : ""}`}>
-              {d || <span style={{ color: "var(--fg-3)", opacity: 0.3 }}>–</span>}
+              {d || "–"}
             </div>
           ))}
         </div>
@@ -454,7 +460,7 @@ const VerifyStep = ({ identity, onBack, onVerify }) => {
             aria-label={`Digit ${i + 1}`}
           />
         ))}
-        <div style={{ marginTop: 14, minHeight: 18 }}>
+        <div>
           {error && <span className="hint hint-err"><IconAlert /> That PIN didn't match. Double-check or request a new one.</span>}
           {verifying && !error && <span className="hint">Verifying…</span>}
         </div>
@@ -480,11 +486,11 @@ const SuccessStep = ({ identity }) => (
         <path d="M20 6 9 17l-5-5"/>
       </svg>
     </div>
-    <h1 className="step-title" style={{ marginBottom: 0 }}>Welcome, {identity.name.split(" ")[0]}.</h1>
-    <p className="step-sub" style={{ maxWidth: 340 }}>
+    <h1 className="step-title">Welcome, {identity.name.split(" ")[0]}.</h1>
+    <p className="step-sub">
       Your account is ready. Opening your first studio — a quiet canvas, waiting.
     </p>
-    <a href="#" className="btn btn-primary" style={{ textDecoration: "none", maxWidth: 280, marginTop: 8 }}>
+    <a href="#" className="btn btn-primary">
       Enter Lumen <IconArrow />
     </a>
   </div>
@@ -494,7 +500,7 @@ const SuccessStep = ({ identity }) => (
    APP
    ====================================================================== */
 const App = () => {
-  const [step, setStep] = useState("details"); // details | verify | done
+  const [step, setStep] = useState("details");
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
   const [country, setCountry] = useState(COUNTRIES[0]);
