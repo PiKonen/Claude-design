@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lumen — Sign in</title>
+
+<!-- Google Fonts: Instrument Serif (display, italic) + JetBrains Mono + Noto Sans -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" />
+
+<!-- React 18 + Babel for in-browser JSX -->
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+
+<style>
+  /* ============================================================
+     Lumen Design System — design tokens
+     Warm, soft, ethereal. Creative tool aesthetic.
+     ============================================================ */
+  :root {
+    /* Brand: warm amber/honey */
+    --brand-50:  #FDF9F1;
+    --brand-100: #FAF0DC;
+    --brand-200: #F4DFB3;
+    --brand-300: #EDC985;
+    --brand-400: #E5B058;
+    --brand-500: #D89535;
+    --brand-600: #B87822;
+    --brand-700: #905B18;
+    --brand-800: #6A4313;
+    --brand-900: #4A2F0F;
+
+    /* Accent: sage green */
+    --accent-50:  #F3F6F2;
+    --accent-100: #E3EADD;
+    --accent-200: #C7D5BC;
+    --accent-300: #A6BC97;
+    --accent-400: #83A074;
+    --accent-500: #638356;
+    --accent-600: #4D6843;
+    --accent-700: #3B5134;
+    --accent-800: #2B3B26;
+    --accent-900: #1D281A;
+
+    /* Neutrals: warm cream → deep warm charcoal */
+    --neutral-0:    #FFFFFF;
+    --neutral-50:   #FBF8F3;
+    --neutral-100:  #F5F0E7;
+    --neutral-200:  #EBE4D6;
+    --neutral-300:  #D9D0BE;
+    --neutral-400:  #B8AD97;
+    --neutral-500:  #8E846F;
+    --neutral-600:  #665E4F;
+    --neutral-700:  #4A4338;
+    --neutral-800:  #2F2A23;
+    --neutral-900:  #1B1814;
+
+    /* Surfaces */
+    --surface-bg:   var(--neutral-50);
+    --surface-card: var(--neutral-0);
+
+    /* Text */
+    --fg-1: var(--neutral-900);
+    --fg-2: var(--neutral-700);
+    --fg-3: var(--neutral-500);
+
+    /* Borders */
+    --border-subtle:  var(--neutral-200);
+    --border-default: var(--neutral-300);
+    --border-strong:  var(--neutral-400);
+    --border-focus:   var(--brand-500);
+
+    /* Type */
+    --font-sans:  "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+    --font-mono:  "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    /* Shadows — warm-tinted */
+    --shadow-sm: 0 1px 3px rgba(74,47,15,0.06), 0 1px 2px rgba(74,47,15,0.04);
+    --shadow-md: 0 4px 10px -2px rgba(74,47,15,0.08), 0 2px 4px -2px rgba(74,47,15,0.04);
+    --shadow-lg: 0 12px 24px -6px rgba(74,47,15,0.10), 0 4px 8px -4px rgba(74,47,15,0.05);
+    --shadow-glow: 0 0 0 4px rgba(216,149,53,0.18);
+
+    /* Motion */
+    --duration-fast:   140ms;
+    --duration-normal: 240ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-soft:     cubic-bezier(0.32, 0.72, 0.2, 1);
+  }
+
+  /* ============================================================
+     Base
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--surface-bg); color: var(--fg-1);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button { font-family: inherit; }
+
+  .page {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    min-height: 100vh;
+  }
+  @media (max-width: 920px) {
+    .page { grid-template-columns: 1fr; }
+    .hero { display: none; }
+  }
+
+  /* ============================================================
+     Left hero — warm radial gradient, editorial quote
+     ============================================================ */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at 22% 28%, #D89535 0%, #AE7322 28%, #7E4F16 62%, #3F280C 100%);
+    padding: 44px 48px;
+    display: flex;
+    flex-direction: column;
+    color: #FBF8F3;
+  }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 82% 84%, rgba(99,131,86,0.32) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .hero-brand { display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
+  .hero-brand svg { height: 32px; width: auto; }
+  .hero-body { margin-top: auto; position: relative; z-index: 1; max-width: 560px; }
+  .hero-caption {
+    font-size: 12px;
+    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
+    color: rgba(251,248,243,0.78);
+    margin-bottom: 22px;
+  }
+  .hero-quote {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(44px, 5.2vw, 72px); line-height: 1.02;
+    letter-spacing: -0.02em; color: #FBF8F3;
+    text-shadow: 0 2px 14px rgba(74,47,15,0.22);
+  }
+  .hero-sub {
+    margin-top: 26px; max-width: 440px;
+    color: rgba(251,248,243,0.86);
+    font-size: 15px; line-height: 1.6;
+  }
+  .hero-foot {
+    position: relative; z-index: 1;
+    margin-top: 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: rgba(251,248,243,0.72);
+  }
+
+  /* ============================================================
+     Right form
+     ============================================================ */
+  .form-side {
+    display: flex; flex-direction: column;
+    padding: 40px 48px; min-height: 100vh;
+    background: var(--surface-bg);
+  }
+  .form-top {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: var(--fg-2);
+  }
+  .form-top .top-mark { display: none; }
+  @media (max-width: 920px) {
+    .form-top .top-mark { display: flex; align-items: center; gap: 10px; }
+    .form-top .top-mark svg { height: 26px; width: auto; }
+  }
+  .form-top a { color: var(--brand-700); text-decoration: none; font-weight: 500; }
+  .form-top a:hover { color: var(--brand-800); text-decoration: underline; text-underline-offset: 3px; }
+
+  .form-wrap {
+    margin: auto 0;
+    width: 100%; max-width: 400px;
+    align-self: center;
+    display: flex; flex-direction: column; gap: 26px;
+  }
+
+  .step-title {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: 44px; line-height: 1.08; letter-spacing: -0.02em;
+    color: var(--fg-1);
+    margin: 0 0 14px;
+  }
+  .step-sub { color: var(--fg-2); font-size: 15px; line-height: 1.55; margin: 0; }
+  .step-sub .dest { color: var(--fg-1); font-weight: 500; }
+
+  /* Fields */
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .label { font-size: 13px; font-weight: 500; color: var(--fg-1); letter-spacing: 0.005em; }
+  .label-row { display: flex; justify-content: space-between; align-items: baseline; }
+
+  /* Smart input shell */
+  .input-shell {
+    display: flex; align-items: stretch;
+    border-radius: 12px; border: 1px solid var(--border-default);
+    background: var(--surface-card);
+    transition: all var(--duration-fast) var(--ease-standard);
+    overflow: visible;
+    position: relative;
+  }
+  .input-shell:focus-within { border-color: var(--brand-500); box-shadow: var(--shadow-glow); }
+  .input-shell.input-error { border-color: #D99375; }
+
+  .input {
+    font-family: inherit; font-size: 16px; padding: 13px 14px;
+    border: none; background: transparent; color: var(--fg-1);
+    outline: none; width: 100%; border-radius: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .input::placeholder { color: var(--fg-3); }
+
+  /* Country picker button */
+  .cc-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 10px 0 14px; background: transparent; border: none;
+    border-right: 1px solid var(--border-subtle);
+    cursor: pointer; font-size: 15px; color: var(--fg-1);
+    transition: background var(--duration-fast);
+    border-radius: 12px 0 0 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .cc-btn:hover { background: var(--neutral-100); }
+  .cc-btn .flag { font-size: 18px; line-height: 1; }
+  .cc-btn .chev { opacity: 0.5; margin-left: 2px; }
+
+  /* Mode hint pill */
+  .mode-hint {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--fg-2);
+    padding: 4px 10px; border-radius: 9999px;
+    background: var(--neutral-100); border: 1px solid var(--border-subtle);
+    transition: all var(--duration-fast) var(--ease-soft);
+    width: fit-content;
+  }
+  .mode-hint.mode-email { background: var(--brand-50); color: var(--brand-800); border-color: var(--brand-100); }
+  .mode-hint.mode-phone { background: var(--accent-100); color: var(--accent-700); border-color: var(--accent-200); }
+  .mode-hint svg { opacity: 0.8; }
+
+  .hint { font-size: 12px; color: var(--fg-3); line-height: 1.5; }
+  .hint-err { color: #8A3A1E; display: flex; align-items: center; gap: 6px; }
+
+  /* Country dropdown */
+  .cc-pop {
+    position: absolute; top: calc(100% + 6px); left: 0;
+    width: 320px; max-height: 320px; overflow: hidden;
+    background: var(--surface-card); border: 1px solid var(--border-default);
+    border-radius: 14px; box-shadow: var(--shadow-lg);
+    z-index: 20; display: flex; flex-direction: column;
+    animation: popIn 160ms var(--ease-soft);
+  }
+  @keyframes popIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .cc-search {
+    padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cc-search input {
+    border: none; outline: none; background: transparent;
+    font: inherit; font-size: 14px; color: var(--fg-1); width: 100%;
+  }
+  .cc-list { overflow-y: auto; padding: 6px; }
+  .cc-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 8px; cursor: pointer;
+    font-size: 14px; color: var(--fg-1);
+  }
+  .cc-item:hover, .cc-item.hl { background: var(--neutral-100); }
+  .cc-item .flag { font-size: 18px; }
+  .cc-item .name { flex: 1; }
+  .cc-item .dial { color: var(--fg-3); font-variant-numeric: tabular-nums; }
+
+  /* Primary button */
+  .btn {
+    font-family: var(--font-sans); font-weight: 600; font-size: 15px;
+    border-radius: 12px; padding: 13px 18px; cursor: pointer;
+    border: 1px solid transparent;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all var(--duration-fast) var(--ease-standard);
+    width: 100%;
+  }
+  .btn-primary {
+    background: #905B18; color: #FFFFFF;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 1px 2px rgba(74,47,15,0.2);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: #6A4313; transform: translateY(-1px);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 10px rgba(74,47,15,0.18);
+  }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Divider */
+  .divider-text {
+    display: flex; align-items: center; gap: 14px;
+    color: var(--fg-3); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; font-weight: 500;
+  }
+  .divider-text::before, .divider-text::after {
+    content: ''; flex: 1; height: 1px; background: var(--border-subtle);
+  }
+
+  /* SSO row */
+  .sso { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sso-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--surface-card); color: var(--fg-1);
+    border: 1px solid var(--border-default); border-radius: 12px;
+    padding: 11px 14px; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all var(--duration-fast);
+  }
+  .sso-btn:hover { background: var(--neutral-100); border-color: var(--neutral-400); transform: translateY(-1px); }
+
+  /* OTP cells */
+  .otp-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .otp-cell {
+    aspect-ratio: 3/4; border-radius: 14px;
+    border: 1px solid var(--border-default);
+    background: var(--surface-card);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-style: italic; font-size: 34px;
+    color: var(--fg-1);
+    transition: all var(--duration-fast) var(--ease-standard);
+  }
+  .otp-cell.filled { border-color: var(--neutral-500); background: var(--surface-card); }
+  .otp-cell.active { border-color: var(--brand-500); box-shadow: var(--shadow-glow); }
+  .otp-cell.error  { border-color: #D99375; color: #8A3A1E; background: #FBF2EC; }
+  .otp-hidden { position: absolute; opacity: 0; pointer-events: none; left: -9999px; }
+
+  .resend-row {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: var(--fg-2);
+  }
+  .resend-row button {
+    background: none; border: none; padding: 0; cursor: pointer;
+    font: inherit; color: var(--brand-700); font-weight: 500;
+  }
+  .resend-row button:hover:not(:disabled) {
+    color: var(--brand-800); text-decoration: underline; text-underline-offset: 3px;
+  }
+  .resend-row button:disabled { color: var(--fg-3); cursor: not-allowed; }
+
+  /* "Remember this device" custom checkbox */
+  .remember {
+    display: flex; align-items: flex-start; gap: 10px;
+    cursor: pointer; user-select: none;
+    padding: 2px 0;
+  }
+  .remember input { position: absolute; opacity: 0; pointer-events: none; }
+  .remember .box {
+    width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;
+    border-radius: 5px; border: 1.5px solid var(--border-default);
+    background: var(--surface-card);
+    display: flex; align-items: center; justify-content: center;
+    color: transparent;
+    transition: all var(--duration-fast) var(--ease-standard);
+  }
+  .remember:hover .box { border-color: var(--neutral-500); }
+  .remember input:checked + .box {
+    background: var(--brand-500); border-color: var(--brand-500); color: #fff;
+  }
+  .remember input:focus-visible + .box { box-shadow: var(--shadow-glow); }
+  .remember .rem-label { font-size: 13px; color: var(--fg-1); line-height: 1.45; }
+  .remember .rem-sub { font-size: 12px; color: var(--fg-3); display: block; margin-top: 2px; }
+
+  /* Back button */
+  .back {
+    align-self: flex-start;
+    background: none; border: none; padding: 4px 0; cursor: pointer;
+    font: inherit; font-size: 13px; color: var(--fg-2);
+    display: inline-flex; align-items: center; gap: 6px;
+    font-weight: 500;
+  }
+  .back:hover { color: var(--fg-1); }
+
+  /* Step transition */
+  .step { animation: fadeUp 340ms var(--ease-soft) both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .foot-legal {
+    font-size: 12px; color: var(--fg-3); text-align: center;
+    margin-top: 4px; line-height: 1.55;
+  }
+  .foot-legal a { color: var(--fg-2); text-decoration: underline; text-underline-offset: 2px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- Inline SVG logos as React components below; no external asset files needed -->
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo } = React;
+
+/* ============================================================
+   Country data (curated dial codes)
+   ============================================================ */
+const COUNTRIES = [
+  { code: "FI", name: "Finland",        dial: "+358", flag: "🇫🇮" },
+  { code: "US", name: "United States",  dial: "+1",   flag: "🇺🇸" },
+  { code: "GB", name: "United Kingdom", dial: "+44",  flag: "🇬🇧" },
+  { code: "DE", name: "Germany",        dial: "+49",  flag: "🇩🇪" },
+  { code: "FR", name: "France",         dial: "+33",  flag: "🇫🇷" },
+  { code: "SE", name: "Sweden",         dial: "+46",  flag: "🇸🇪" },
+  { code: "NO", name: "Norway",         dial: "+47",  flag: "🇳🇴" },
+  { code: "DK", name: "Denmark",        dial: "+45",  flag: "🇩🇰" },
+  { code: "NL", name: "Netherlands",    dial: "+31",  flag: "🇳🇱" },
+  { code: "ES", name: "Spain",          dial: "+34",  flag: "🇪🇸" },
+  { code: "IT", name: "Italy",          dial: "+39",  flag: "🇮🇹" },
+  { code: "PT", name: "Portugal",       dial: "+351", flag: "🇵🇹" },
+  { code: "IE", name: "Ireland",        dial: "+353", flag: "🇮🇪" },
+  { code: "BE", name: "Belgium",        dial: "+32",  flag: "🇧🇪" },
+  { code: "CH", name: "Switzerland",    dial: "+41",  flag: "🇨🇭" },
+  { code: "AT", name: "Austria",        dial: "+43",  flag: "🇦🇹" },
+  { code: "PL", name: "Poland",         dial: "+48",  flag: "🇵🇱" },
+  { code: "EE", name: "Estonia",        dial: "+372", flag: "🇪🇪" },
+  { code: "LV", name: "Latvia",         dial: "+371", flag: "🇱🇻" },
+  { code: "LT", name: "Lithuania",      dial: "+370", flag: "🇱🇹" },
+  { code: "IS", name: "Iceland",        dial: "+354", flag: "🇮🇸" },
+  { code: "CA", name: "Canada",         dial: "+1",   flag: "🇨🇦" },
+  { code: "MX", name: "Mexico",         dial: "+52",  flag: "🇲🇽" },
+  { code: "BR", name: "Brazil",         dial: "+55",  flag: "🇧🇷" },
+  { code: "AR", name: "Argentina",      dial: "+54",  flag: "🇦🇷" },
+  { code: "AU", name: "Australia",      dial: "+61",  flag: "🇦🇺" },
+  { code: "NZ", name: "New Zealand",    dial: "+64",  flag: "🇳🇿" },
+  { code: "JP", name: "Japan",          dial: "+81",  flag: "🇯🇵" },
+  { code: "KR", name: "South Korea",    dial: "+82",  flag: "🇰🇷" },
+  { code: "CN", name: "China",          dial: "+86",  flag: "🇨🇳" },
+  { code: "HK", name: "Hong Kong",      dial: "+852", flag: "🇭🇰" },
+  { code: "SG", name: "Singapore",      dial: "+65",  flag: "🇸🇬" },
+  { code: "IN", name: "India",          dial: "+91",  flag: "🇮🇳" },
+  { code: "AE", name: "United Arab Emirates", dial: "+971", flag: "🇦🇪" },
+  { code: "IL", name: "Israel",         dial: "+972", flag: "🇮🇱" },
+  { code: "TR", name: "Türkiye",        dial: "+90",  flag: "🇹🇷" },
+  { code: "ZA", name: "South Africa",   dial: "+27",  flag: "🇿🇦" },
+];
+
+/* ============================================================
+   Icons — small inline SVGs, stroke 1.75–2 rounded
+   ============================================================ */
+const IconArrow = ({ dir = "right", size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: dir === "left" ? "rotate(180deg)" : "none" }}>
+    <path d="M5 12h14M13 5l7 7-7 7"/>
+  </svg>
+);
+const IconMail = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 7 9 6 9-6"/>
+  </svg>
+);
+const IconPhone = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.961.361 1.904.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.906.339 1.849.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+  </svg>
+);
+const IconChev = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m6 9 6 6 6-6"/>
+  </svg>
+);
+const IconSearch = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+  </svg>
+);
+const IconCheck = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20 6 9 17l-5-5"/>
+  </svg>
+);
+const IconAlert = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+  </svg>
+);
+const IconGoogle = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24">
+    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.28-1.93-6.15-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+    <path fill="#FBBC04" d="M5.85 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.67-2.84z"/>
+    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.67 2.84C6.72 7.31 9.14 5.38 12 5.38z"/>
+  </svg>
+);
+const IconApple = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="#1B1814">
+    <path d="M17.05 12.54c0-2.4 1.97-3.56 2.06-3.62-1.12-1.64-2.88-1.87-3.5-1.89-1.49-.15-2.91.88-3.67.88-.77 0-1.93-.86-3.18-.83-1.63.02-3.13.95-3.97 2.41-1.7 2.94-.43 7.28 1.21 9.66.81 1.17 1.77 2.48 3.02 2.43 1.22-.05 1.68-.78 3.15-.78 1.47 0 1.88.78 3.17.76 1.31-.02 2.14-1.18 2.94-2.36.93-1.36 1.31-2.68 1.33-2.75-.03-.01-2.54-.97-2.56-3.91zM14.65 5.33c.66-.8 1.11-1.92.99-3.03-.96.04-2.12.64-2.81 1.44-.62.71-1.16 1.84-1.01 2.93 1.07.08 2.17-.54 2.83-1.34z"/>
+  </svg>
+);
+
+/* ============================================================
+   Lumen logos (inline SVG — concentric circles + wordmark)
+   ============================================================ */
+const LumenLogo = ({ inverse = false }) => (
+  <svg viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Lumen">
+    <g>
+      <circle cx="20" cy="20" r="14" fill={inverse ? "rgba(255,255,255,0.12)" : "#FAF0DC"} />
+      <circle cx="20" cy="20" r="9"  fill={inverse ? "#F4DFB3" : "#EDC985"} />
+      <circle cx="20" cy="20" r="4.5" fill={inverse ? "#E5B058" : "#D89535"} />
+      <circle cx="20" cy="20" r="1.8" fill={inverse ? "#FBF8F3" : "#4A2F0F"} />
+    </g>
+    <text x="44" y="27"
+          fontFamily='"Noto Sans", system-ui, -apple-system, sans-serif'
+          fontSize="22" fontWeight="600" letterSpacing="-0.02em"
+          fill={inverse ? "#FBF8F3" : "#1B1814"}>Lumen</text>
+  </svg>
+);
+
+/* ============================================================
+   Detection helpers
+   ============================================================ */
+const detectMode = (raw) => {
+  const v = raw.trim();
+  if (!v) return "empty";
+  if (v.includes("@")) return "email";
+  if (/^\+/.test(v)) return "phone";
+  const digits = v.replace(/[\s\-().]/g, "");
+  if (/^\d{2,}$/.test(digits)) return "phone";
+  return "typing";
+};
+const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+const isValidPhone = (v) => {
+  const digits = v.replace(/\D/g, "");
+  return digits.length >= 6 && digits.length <= 15;
+};
+const formatPhone = (v) => {
+  const digits = v.replace(/\D/g, "").slice(0, 12);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `${digits.slice(0,3)} ${digits.slice(3)}`;
+  if (digits.length <= 9) return `${digits.slice(0,3)} ${digits.slice(3,6)} ${digits.slice(6)}`;
+  return `${digits.slice(0,3)} ${digits.slice(3,6)} ${digits.slice(6,9)} ${digits.slice(9)}`;
+};
+
+/* ============================================================
+   Hero (left column)
+   ============================================================ */
+const Hero = () => (
+  <section className="hero" aria-hidden="true">
+    <div className="hero-brand">
+      <LumenLogo inverse />
+    </div>
+    <div className="hero-body">
+      <div className="hero-caption">A quieter studio</div>
+      <div className="hero-quote">Morning light,<br/>carefully shaped.</div>
+      <p className="hero-sub">
+        Sign in to pick up where you left your cursor — your moodboards,
+        palettes, and half-finished thoughts are right where you left them.
+      </p>
+    </div>
+    <div className="hero-foot">
+      <span>© 2026 Lumen Studio</span>
+      <span>lumen.studio</span>
+    </div>
+  </section>
+);
+
+/* ============================================================
+   Country picker popover
+   ============================================================ */
+const CountryPopover = ({ selected, onSelect, onClose }) => {
+  const [q, setQ] = useState("");
+  const [hl, setHl] = useState(0);
+  const popRef = useRef(null);
+  const searchRef = useRef(null);
+
+  useEffect(() => { searchRef.current && searchRef.current.focus(); }, []);
+
+  useEffect(() => {
+    const onDoc = (e) => { if (popRef.current && !popRef.current.contains(e.target)) onClose(); };
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("mousedown", onDoc); document.removeEventListener("keydown", onKey); };
+  }, [onClose]);
+
+  const filtered = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    if (!needle) return COUNTRIES;
+    return COUNTRIES.filter(c =>
+      c.name.toLowerCase().includes(needle) ||
+      c.dial.includes(needle) ||
+      c.code.toLowerCase().includes(needle)
+    );
+  }, [q]);
+
+  return (
+    <div className="cc-pop" ref={popRef} role="listbox" aria-label="Country code">
+      <div className="cc-search">
+        <IconSearch />
+        <input
+          ref={searchRef}
+          placeholder="Search country or code"
+          value={q}
+          onChange={(e) => { setQ(e.target.value); setHl(0); }}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") { e.preventDefault(); setHl(h => Math.min(h + 1, filtered.length - 1)); }
+            else if (e.key === "ArrowUp") { e.preventDefault(); setHl(h => Math.max(h - 1, 0)); }
+            else if (e.key === "Enter") { e.preventDefault(); if (filtered[hl]) { onSelect(filtered[hl]); } }
+          }}
+        />
+      </div>
+      <div className="cc-list">
+        {filtered.length === 0 && (
+          <div style={{ padding: 16, color: "var(--fg-3)", fontSize: 13 }}>No matches.</div>
+        )}
+        {filtered.map((c, i) => (
+          <div
+            key={c.code}
+            className={`cc-item ${i === hl ? "hl" : ""} ${selected.code === c.code ? "hl" : ""}`}
+            onMouseEnter={() => setHl(i)}
+            onClick={() => onSelect(c)}
+            role="option"
+            aria-selected={selected.code === c.code}
+          >
+            <span className="flag">{c.flag}</span>
+            <span className="name">{c.name}</span>
+            <span className="dial">{c.dial}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ============================================================
+   Identify step — smart single input
+   ============================================================ */
+const IdentifyStep = ({ value, setValue, country, setCountry, onSubmit }) => {
+  const mode = detectMode(value);
+  const [ccOpen, setCcOpen] = useState(false);
+  const inputRef = useRef(null);
+
+  const isPhone = mode === "phone";
+  const isEmail = mode === "email";
+
+  const valid = isEmail ? isValidEmail(value) : isPhone ? isValidPhone(value) : false;
+
+  const handleChange = (e) => {
+    let v = e.target.value;
+    const m = detectMode(v);
+    if (m === "phone" && !v.startsWith("+")) {
+      v = formatPhone(v);
+    }
+    setValue(v);
+  };
+
+  const placeholder = isPhone ? "40 123 4567" : "you@studio.com or +358…";
+
+  return (
+    <div className="step" style={{ display: "flex", flexDirection: "column", gap: 26 }}>
+      <div>
+        <h1 className="step-title">Sign in to Lumen</h1>
+        <p className="step-sub">
+          Enter your email or phone. We'll send a one-time code — no password required.
+        </p>
+      </div>
+
+      <form
+        onSubmit={(e) => { e.preventDefault(); if (valid) onSubmit({ mode: isEmail ? "email" : "phone", value: value.trim(), country }); }}
+        style={{ display: "flex", flexDirection: "column", gap: 14 }}
+      >
+        <div className="field">
+          <div className="label-row">
+            <label className="label" htmlFor="identifier">Email or phone</label>
+            {(isEmail || isPhone) && (
+              <span className={`mode-hint mode-${isEmail ? "email" : "phone"}`}>
+                {isEmail ? <IconMail /> : <IconPhone />}
+                {isEmail ? "Email" : "Phone"}
+              </span>
+            )}
+          </div>
+
+          <div className="input-shell" style={{ position: "relative" }}>
+            {isPhone && (
+              <button
+                type="button"
+                className="cc-btn"
+                onClick={() => setCcOpen(o => !o)}
+                aria-haspopup="listbox"
+                aria-expanded={ccOpen}
+              >
+                <span className="flag">{country.flag}</span>
+                <span>{country.dial}</span>
+                <span className="chev"><IconChev size={12} /></span>
+              </button>
+            )}
+            <input
+              id="identifier"
+              ref={inputRef}
+              className="input"
+              type="text"
+              inputMode={isPhone ? "tel" : "email"}
+              autoComplete={isPhone ? "tel-national" : "email"}
+              placeholder={placeholder}
+              value={value}
+              onChange={handleChange}
+              autoFocus
+            />
+            {isPhone && ccOpen && (
+              <CountryPopover
+                selected={country}
+                onSelect={(c) => { setCountry(c); setCcOpen(false); inputRef.current && inputRef.current.focus(); }}
+                onClose={() => setCcOpen(false)}
+              />
+            )}
+          </div>
+
+          <span className="hint">
+            {isPhone
+              ? "We'll text a code. Standard message rates may apply."
+              : isEmail
+              ? "We'll send a code to this address."
+              : "Use the address or number tied to your Lumen account."}
+          </span>
+        </div>
+
+        <button type="submit" className="btn btn-primary" disabled={!valid}>
+          Send code <IconArrow />
+        </button>
+      </form>
+
+      <div className="divider-text">or continue with</div>
+
+      <div className="sso">
+        <button className="sso-btn" type="button"><IconGoogle /> Google</button>
+        <button className="sso-btn" type="button"><IconApple /> Apple</button>
+      </div>
+
+      <p className="foot-legal">
+        By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy</a>.
+      </p>
+    </div>
+  );
+};
+
+/* ============================================================
+   OTP step — 6 cells, method-aware copy
+   ============================================================ */
+const CodeStep = ({ identity, onBack, onVerify }) => {
+  const [digits, setDigits] = useState(["", "", "", "", "", ""]);
+  const [active, setActive] = useState(0);
+  const [error, setError] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [remember, setRemember] = useState(true);
+  const [secondsLeft, setSecondsLeft] = useState(32);
+  const refs = useRef([]);
+
+  const isPhone = identity.mode === "phone";
+  const destination = isPhone
+    ? `${identity.country.dial} ${identity.value}`
+    : identity.value;
+
+  useEffect(() => { refs.current[0] && refs.current[0].focus(); }, []);
+
+  useEffect(() => {
+    if (secondsLeft <= 0) return;
+    const t = setTimeout(() => setSecondsLeft(s => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [secondsLeft]);
+
+  const tryVerify = (code) => {
+    setVerifying(true);
+    setTimeout(() => {
+      if (code.length === 6 && /^\d{6}$/.test(code)) {
+        onVerify({ remember });
+      } else {
+        setError(true);
+        setVerifying(false);
+      }
+    }, 520);
+  };
+
+  const update = (idx, val) => {
+    const clean = val.replace(/\D/g, "").slice(0, 1);
+    const next = [...digits];
+    next[idx] = clean;
+    setDigits(next);
+    setError(false);
+    if (clean && idx < 5) {
+      setActive(idx + 1);
+      refs.current[idx + 1] && refs.current[idx + 1].focus();
+    }
+    if (next.every(d => d) && next.join("").length === 6) {
+      tryVerify(next.join(""));
+    }
+  };
+
+  const onKey = (idx, e) => {
+    if (e.key === "Backspace" && !digits[idx] && idx > 0) {
+      const prev = idx - 1;
+      setActive(prev);
+      refs.current[prev] && refs.current[prev].focus();
+    } else if (e.key === "ArrowLeft" && idx > 0) {
+      setActive(idx - 1); refs.current[idx - 1] && refs.current[idx - 1].focus();
+    } else if (e.key === "ArrowRight" && idx < 5) {
+      setActive(idx + 1); refs.current[idx + 1] && refs.current[idx + 1].focus();
+    }
+  };
+
+  const onPaste = (e) => {
+    const pasted = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 6);
+    if (!pasted) return;
+    e.preventDefault();
+    const next = pasted.split("");
+    while (next.length < 6) next.push("");
+    setDigits(next);
+    const lastIdx = Math.min(pasted.length, 5);
+    setActive(lastIdx);
+    refs.current[lastIdx] && refs.current[lastIdx].focus();
+    if (pasted.length === 6) tryVerify(pasted);
+  };
+
+  const resend = () => {
+    setSecondsLeft(32);
+    setDigits(["", "", "", "", "", ""]);
+    setActive(0);
+    setError(false);
+    refs.current[0] && refs.current[0].focus();
+  };
+
+  return (
+    <div className="step" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <button className="back" onClick={onBack} type="button">
+        <IconArrow dir="left" /> Use a different {isPhone ? "number" : "email"}
+      </button>
+
+      <div>
+        <h1 className="step-title">{isPhone ? "Check your messages" : "Check your inbox"}</h1>
+        <p className="step-sub">
+          We sent a 6-digit code to <span className="dest">{destination}</span>.
+          {' '}It expires in 10 minutes.
+        </p>
+      </div>
+
+      <div>
+        <div
+          className="otp-row"
+          onClick={() => refs.current[active] && refs.current[active].focus()}
+          role="group"
+          aria-label="One-time code"
+        >
+          {digits.map((d, i) => (
+            <div key={i} className={`otp-cell ${d ? "filled" : ""} ${active === i && !error ? "active" : ""} ${error ? "error" : ""}`}>
+              {d || <span style={{ color: "var(--fg-3)", opacity: 0.3 }}>–</span>}
+            </div>
+          ))}
+        </div>
+        {digits.map((d, i) => (
+          <input
+            key={i}
+            ref={(el) => refs.current[i] = el}
+            className="otp-hidden"
+            type="text"
+            inputMode="numeric"
+            autoComplete={i === 0 ? "one-time-code" : "off"}
+            maxLength={1}
+            value={d}
+            onChange={(e) => update(i, e.target.value)}
+            onKeyDown={(e) => onKey(i, e)}
+            onFocus={() => setActive(i)}
+            onPaste={onPaste}
+            aria-label={`Digit ${i + 1}`}
+          />
+        ))}
+        <div style={{ marginTop: 14, minHeight: 18 }}>
+          {error && <span className="hint hint-err"><IconAlert /> That code didn't match. Double-check or request a new one.</span>}
+          {verifying && !error && <span className="hint">Verifying…</span>}
+        </div>
+      </div>
+
+      <label className="remember">
+        <input
+          type="checkbox"
+          checked={remember}
+          onChange={(e) => setRemember(e.target.checked)}
+        />
+        <span className="box"><IconCheck size={12} /></span>
+        <span className="rem-label">
+          Remember this device
+          <span className="rem-sub">Skip codes here for 30 days. Only use on your own devices.</span>
+        </span>
+      </label>
+
+      <div className="resend-row">
+        <span>Didn't get it?</span>
+        <button type="button" onClick={resend} disabled={secondsLeft > 0}>
+          {secondsLeft > 0 ? `Resend in ${secondsLeft}s` : "Resend code"}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ============================================================
+   App shell
+   ============================================================ */
+const App = () => {
+  const [step, setStep] = useState("identify"); // identify | code
+  const [value, setValue] = useState("");
+  const [country, setCountry] = useState(COUNTRIES[0]); // Finland default
+  const [identity, setIdentity] = useState(null);
+
+  const onIdentify = (id) => {
+    setIdentity(id);
+    setStep("code");
+  };
+
+  return (
+    <div className="page" data-screen-label={`login-${step}`}>
+      <Hero />
+      <div className="form-side">
+        <div className="form-top">
+          <div className="top-mark">
+            <LumenLogo />
+          </div>
+          <span>New here? <a href="#">Create an account</a></span>
+        </div>
+        <div className="form-wrap">
+          {step === "identify" && (
+            <IdentifyStep
+              value={value}
+              setValue={setValue}
+              country={country}
+              setCountry={setCountry}
+              onSubmit={onIdentify}
+            />
+          )}
+          {step === "code" && (
+            <CodeStep
+              identity={identity}
+              onBack={() => setStep("identify")}
+              onVerify={() => { /* no success screen per spec */ }}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
