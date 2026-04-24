@@ -1,4 +1,4 @@
-# [Your Brand] Design System
+# PINX Design System
 
 A design system for [Your Brand]'s web and product surfaces. This repository contains design tokens, component specifications, and usage guidance.
 
