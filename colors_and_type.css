@@ -1,4 +1,3 @@
-<style>
   /* ============================================================
      Lumen Design System — design tokens
      Warm, soft, ethereal. Creative tool aesthetic.
@@ -372,4 +371,3 @@
     margin-top: 4px; line-height: 1.55;
   }
   .foot-legal a { color: var(--fg-2); text-decoration: underline; text-underline-offset: 2px; }
-</style>
